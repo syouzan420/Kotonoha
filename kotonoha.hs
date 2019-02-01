@@ -4,7 +4,7 @@ import Haste.Graphics.Canvas
 import Haste.Foreign
 
 textfile :: String
-textfile = "test3.txt"
+textfile = "kotonoha.txt"
 
 startX :: Double
 startX = 400
