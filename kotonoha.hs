@@ -32,5 +32,5 @@ letterList ts = do
                         (map (+startY) $ cycle [30,60..(30*14)])) (map (\c -> c : []) ts)
     
 readFromFile :: String -> IO String
-readFromFile = ffi "(function(fname){var text=null; var ajax=new XMLHttpRequest(); /*@if(1) ajax.onreadystatechange @else@*/ ajax.onload /*@end@*/ = function(){ (ajax.readyState==4)&&(ajax.status==200)&&(text=ajax.responseText);}; ajax.open('GET',fname,false); ajax.send(null); return text;})"
+readFromFile = ffi "(function(fname){var text=null; var ajax=new XMLHttpRequest(); ajax.open('GET',fname,false); ajax.onreadystatechange = function(){if(ajax.readyState==4){if(ajax.status==200 || ajax.status==0){text=ajax.responseText;};};}; ajax.send(null); return text;})"
 
