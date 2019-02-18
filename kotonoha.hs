@@ -1,13 +1,18 @@
 {-# LANGUAGE OverloadedStrings #-}
 import Haste
 import Haste.Graphics.Canvas
+import Haste.Events (onEvent,BasicEvent(..))
+import Haste.DOM (elemOf)
 import Haste.Foreign
 
 textfile :: String
 textfile = "kotonoha.txt"
 
+imgfile :: URL 
+imgfile = "chara.png"
+
 startX :: Double
-startX = 400
+startX = 410
 
 startY :: Double
 startY = 100
@@ -15,16 +20,21 @@ startY = 100
 main :: IO ()
 main = do
     Just can <- getCanvasById "canvas"
+    ch <- loadBitmap imgfile
     tx <- readFromFile textfile  
-    view can tx
+    elemOf ch `onEvent` Load $ \_ -> do
+      view can ch tx
+    return () 
 
-view :: Canvas -> String -> IO ()
-view can tx = do
+view :: Canvas -> Bitmap -> String -> IO ()
+view can ch tx = do
     render can $ do
+      scale (2, 2) $ do
+        draw ch (20,5)
       lineWidth 2.0 $ do
-        color (RGB 255 255 255) $ stroke $ rect (0,0) (450,700) 
+        color (RGB 255 255 255) $ stroke $ rect (5,80) (450,520) 
       mapM_ (color (RGBA 255 255 255 0.8) . font "24px oshide") $ letterList tx 
-      return ()            
+    return ()            
 
 letterList :: String -> [Picture ()]
 letterList ts = do
